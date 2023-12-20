@@ -1,93 +1,96 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { BiCartAlt, BiTrashAlt } from 'react-icons/bi';
+import { useDispatchCart} from "./ContextReducer";
 
-export default function Card() {
-    const handleHover = () => {
-      document.getElementById("card").style.boxShadow =
-        "10px 10px 10px #888888";
-    };
+export default function Card(props) {
+  let dispatch = useDispatchCart();
+  const [qty, setQty] = useState(1);
+  const [showQuantityControls, setShowQuantityControls] = useState(false);
+  // let data=useCart();
 
-    const handleUnhover = () => {
-      document.getElementById("card").style.boxShadow = "5px 5px 5px #888888";
-    };
-    const cardStyle = {
-      margin: "10px",
-      width: "22rem",
-      maxHeight: "400px",
-      boxShadow: "5px 5px 5px",
-      transition: "box-shadow 0.3s",
-    };
-    const numbr = {
-      display: "flex",
-      justifyContent: "center"
-    };
-    const qty = {
-      width: "10rem"
-      
-    };
-    const [showQuantityControls, setShowQuantityControls] = useState(false);
-    const [itemCount, setItemCount] = useState(1);
+  const handleAddToCart = async () => {
+    const totalPrice = qty * props.foodItem.price;
+    await dispatch({
+      type: "ADD",
+      id: props.foodItem._id,
+      name: props.foodItem.name,
+      qty: qty,
+      img: props.foodItem.img,
+      totalPrice: totalPrice,
+      price: props.foodItem.price
+    });
+    setQty(1);
+    setShowQuantityControls(false);
+    console.log("Item added to cart");
 
-    const handleAddClick = () => {
-      setShowQuantityControls(true);
-    };
+  };
+  const handleDeleteFromCart = async () => {
+    await dispatch({ type: "REMOVE", id: props.foodItem._id });
+    console.log("Item removed from cart");
+  };
 
-    const handleIncrement = () => {
-      if (itemCount < 10) {
-        setItemCount(itemCount + 1);
-      }
-    };
+  const handleAddClick = () => {
+    setShowQuantityControls(true);
+  };
 
-    const handleDecrement = () => {
-      if (itemCount > 1) {
-        setItemCount(itemCount - 1);
-      } else {
-        setShowQuantityControls(false);
-      }
-    };
+  const handleIncrement = () => {
+    if (qty < 10) {
+      setQty(qty + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (qty > 1) {
+      setQty(qty - 1);
+    } else {
+      setShowQuantityControls(false);
+    }
+  };
+
   return (
-    <div>
-      <div
-        id="card"
-        class="card m-10 p-10"
-        onMouseEnter={handleHover}
-        onMouseLeave={handleUnhover}
-        style={cardStyle}
-      >
-        <img src="https://media.istockphoto.com/id/1189709277/photo/pasta-penne-with-roasted-tomato-sauce-mozzarella-cheese-grey-stone-background-top-view.jpg?s=1024x1024&w=is&k=20&c=-cx2OEvdsCqs2TPK_EttPr7QZoTmeNww-Wa2njBeCR0=" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Pasta</h5>
-          <p class="card-text" style={{color:"#ff7800"}}>Tangy red sauce pasta</p>
-          <div className="container w-100" style={numbr}>
+    <div style={{ marginLeft: "3.3rem", marginBottom: "2rem" }}>
+      <div id="card" className="card m-10 p-10" style={{ width: "16rem", maxHeight: "400px" }}>
+        <img src={props.foodItem.img} className="card-img-top" alt="..." style={{ height: "10rem" }} />
+        <div className="card-body">
+          <h5 className="card-title mb-1" style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{props.foodItem.name}</span>
+            <span style={{
+              fontSize: "0.8rem",
+              border: "1px solid #ff7800",
+              color: "#ff7800",
+              padding: "3px",
+              borderRadius: "5px"
+            }}>
+              &#8377; {props.foodItem.price}/-
+            </span>
+          </h5>
+          <p className="card-text" style={{ color: "#ff7800", fontSize: "0.7rem" }}>{props.foodItem.description}</p>
+          <div className="container w-100" style={{ display: "flex", justifyContent: "center" }}>
             {showQuantityControls ? (
-              <div className="input-group m-2" style={qty}>
-                <button className="input-group-text" onClick={handleDecrement} style={{"backgroundColor": "#ff7800", "color": "#ffffff",borderColor: "#ff7800"}}>
+              <div className="input-group m-2" style={{ width: "10rem", fontSize: "0.8rem" }}>
+                <button className="input-group-text" onClick={handleDecrement} style={{ backgroundColor: "#ff7800", color: "#ffffff", borderColor: "#ff7800" }}>
                   -
                 </button>
-                <span
-                  className="form-control"
-                  style={{ display: "flex", justifyContent: "center", borderColor: "#ff7800", color: "#ff7800" }}
-                >
-                  {itemCount}
+                <span className="form-control" style={{ display: "flex", justifyContent: "center", borderColor: "#ff7800", color: "#ff7800" }}>
+                  {qty}
                 </span>
-                <button className="input-group-text" onClick={handleIncrement} style={{"backgroundColor": "#ff7800", "color": "#ffffff",borderColor: "#ff7800"}}>
+                <button className="input-group-text" onClick={handleIncrement} style={{ backgroundColor: "#ff7800", color: "#ffffff", borderColor: "#ff7800" }}>
                   +
                 </button>
               </div>
             ) : (
-              <button
-                className="btn"
-                onClick={handleAddClick}
-                style={{
-                  borderColor: "#ff7800",
-                  margin: "8px",
-                  width: "10rem",
-                  backgroundColor: "#ff7800",
-                  color: "#ffffff"
-                }}
-              >
-                Add
+              <button className="btn" onClick={handleAddClick} style={{ borderColor: "#ff7800", margin: "8px", width: "10rem", backgroundColor: "#ff7800", color: "#ffffff" }}>
+                Quantity
               </button>
             )}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <button className="btn" onClick={handleAddToCart} style={{ borderColor: "#ff7800", margin: "8px", width: "7rem", backgroundColor: "#ff7800", color: "#ffffff", fontSize: "0.8rem" }}>
+              Add to Cart <BiCartAlt />
+            </button>
+            <button className="btn" onClick={handleDeleteFromCart} style={{ borderColor: "#ff7800", margin: "8px", width: "2rem", backgroundColor: "#ff7800", color: "#ffffff", fontSize: "0.8rem", padding: "6px" }}>
+              <BiTrashAlt />
+            </button>
           </div>
         </div>
       </div>

@@ -18,7 +18,9 @@ app.get('/', (req, res) => {
 })
 
 app.use(express.json());
-app.use('/api', require("./Routes/createuser"));
+app.use('/api', require("./Routes/createUser"));
+app.use('/api', require("./Routes/displayData"));
+app.use('/api', require("./Routes/orderData"));
 
 app.listen(port, () => {
   console.log(`FoodE app is listening on port ${port}`)

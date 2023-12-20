@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import { BiShow, BiHide } from "react-icons/bi";
+import { BiShow, BiHide, BiUser, BiUserPlus, BiEnvelope, BiMap, BiLock, BiLogIn, BiUserCheck } from "react-icons/bi";
 import Navbar from '../components/Navbar';
+import signupbg from './signupbg.jpeg';
+import Footer from '../components/Footer';
 
 const Signup = () => {
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
-    location: "",
+    location: ""
   });
 
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -24,110 +27,100 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
-  fetch("http://localhost:4000/api/createuser", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: credentials.name,
-      email: credentials.email,
-      password: credentials.password,
-      location: credentials.location,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return response.json();
-      } else {
-        console.log("Response was not in JSON format.");
-        return null; // or handle this case accordingly
-      }
-    })
-    .then((json) => {
-      if (json && !json.success) {
-        alert("Enter valid credentials");
-      }
-      console.log(json);
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-};
+let name,value;
 
-
-
-  const onChange = (event) => {
-    setCredentials({ ...credentials, [event.target.name]:event.target.value });
+  const handleInput = (event) => {
+    console.log(event);
+    name=event.target.name;
+    value=event.target.value;
+    setCredentials({ ...credentials, [name]:value });
   };
+
+
+  const PostData = async (e) => {
+    e.preventDefault();
+    const { name, email, password, location } = credentials;
+    const response = await fetch("http://localhost:4000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        location,
+      }),
+    });
+
+    const json = await response.json();
+    console.log(json);
+
+    if (json.success) {
+      alert("Signup successful!");
+      navigate("/login");
+    } else {
+      alert("Enter valid credentials");
+    }
+  };
+
 
   return (
     <div>
         <div><Navbar/></div>
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <div style={{display: "flex", justifyContent: "center", alignItems: "center", maxWidth:"30rem", backgroundColor:"white", color:"white", margin:"2rem", borderRadius:"25px"}}>
-            <form onSubmit={handleSubmit} style={{maxWidth:"30rem", backgroundColor:"ffffff", color:"white", padding:"1.5rem"}}>
-                {/* <h3 style={{color:"black"}}>Signup</h3> */}
+        <div style={{backgroundImage:`url(${signupbg})`, backgroundSize: 'cover',backgroundPosition: 'center',height: '100vh',width: '100vw', display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div style={{maxWidth:"30rem", backgroundColor:"white", color:"white", marginTop:"3.5rem", borderRadius:"25px", boxShadow:"10px 10px 20px 0px black"}}>
+            <h2 style={{ color: "black", display: "flex", justifyContent: "center", alignItems: "center", marginTop:"20px"  }}><BiUserCheck /> Signup</h2>
+            <form method="POST" style={{maxWidth:"30rem", backgroundColor:"ffffff", color:"white", padding:"1.5rem"}}>
                 <div className="form-group mb-3">
-                  <label htmlFor="userName" style={{ color: "black" }}>
-                    Username
+                  <label htmlFor="name" style={{ color: "black" }}>
+                  <BiUser /> Username
                   </label>
                   <input
                     type="text"
                     className="form-control"
+                    id="name"
                     placeholder="Enter username"
                     name="name"
                     value={credentials.name}
-                    onChange={onChange}
+                    onChange={handleInput}
                     style={{ backgroundColor: "white", color: "black" }}
                   />
-                  {/* <small
-                    id="emailHelp"
-                    className="form-text"
-                    style={{ color: "#ff7800" }}
-                  >
-                    We'll never share your email with anyone else.
-                  </small> */}
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label
-                    htmlFor="exampleInputEmail1"
+                    htmlFor="email"
                     style={{ color: "black" }}
                   >
-                    Email
+                    <BiEnvelope /> Email
                   </label>
                   <input
                     type="email"
                     className="form-control"
-                    id="exampleInputEmail1"
+                    id="email"
                     placeholder="Email"
                     name="email"
                     value={credentials.email}
-                    onChange={onChange}
+                    onChange={handleInput}
                     style={{ backgroundColor: "white", color: "black" }}
                   />
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label
-                    htmlFor="exampleInputPassword1"
+                    htmlFor="password"
                     style={{ color: "black" }}
                   >
-                    Password
+                    <BiLock /> Password
                   </label>
                   <div className="input-group">
                     <input
                       type={showPassword ? "text" : "password"}
                       className="form-control"
-                      id="exampleInputPassword1"
+                      id="password"
                       placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                      value={credentials.password}
+                      onChange={handleInput}
                       style={{ backgroundColor: "white", color: "black" }}
                     />
                     <button
@@ -139,21 +132,21 @@ const Signup = () => {
                     </button>
                   </div>
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-3">
                   <label
-                    htmlFor="exampleInputAddress1"
+                    htmlFor="location"
                     style={{ color: "black" }}
                   >
-                    Address
+                    <BiMap /> Address
                   </label>
                   <input
-                    type="address"
+                    type="text"
                     className="form-control"
-                    id="exampleInputAddress1"
-                    placeholder="Address"
+                    id="location"
+                    placeholder="location"
                     name="location"
                     value={credentials.location}
-                    onChange={onChange}
+                    onChange={handleInput}
                     style={{ backgroundColor: "white", color: "black" }}
                   />
                 </div>
@@ -161,6 +154,9 @@ const Signup = () => {
                   className="btn my-2 my-sm-0"
                   variant="primary"
                   type="submit"
+                  name="signup"
+                  id="signup"
+                  onClick={PostData}
                   style={{
                     backgroundColor: "#ff7800",
                     width: "100%",
@@ -168,9 +164,9 @@ const Signup = () => {
                     borderColor: "#ff7800",
                   }}
                 >
-                  Signup
+                  <BiUserPlus /> Signup
                 </Button>
-                <p className="mt-3" style={{ color: "black" }}>
+                <p className="mt-2" style={{ color: "black" }}>
                   By creating an account, I accept the{" "}
                   <Link
                     to="/terms"
@@ -183,11 +179,12 @@ const Signup = () => {
                     to="/privacy"
                     style={{ textDecoration: "none", color: "#ff7800" }}
                   >
-                    Privacy Policy
+                    Privacy Policy.
                   </Link>
                 </p>
-                <p style={{color: "black", textAlign:"centre" }}>Already have an account?</p>
-                <Button
+                <p style={{ color: "black", marginTop:"10px"}}>
+              Already have an account?
+              <Button
                   className="btn my-2 my-sm-0"
                   variant="primary"
                   type="submit"
@@ -202,12 +199,13 @@ const Signup = () => {
                     to="/login"
                     style={{ textDecoration: "none", color: "black" }}
                   >
-                    Login
+                   <BiLogIn /> Login
                   </Link>
                 </Button>
+            </p>
               </form></div></div>
         
-      
+      <div><Footer/></div>
     </div>
   );
 };
