@@ -1,35 +1,23 @@
-import React, { useState } from "react";
-import { BiCartAlt, BiHome, BiLogOut, BiPackage } from "react-icons/bi";
+import React from "react";
+import {
+  BiCartAlt,
+  BiHome,
+  BiLogIn,
+  BiLogOut,
+  BiPackage,
+  BiUser,
+  BiUserPlus,
+} from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import foodelogo from "../screens/foodelogo.png";
 import { useCart } from "./ContextReducer";
-import "./Navbar.css";
 
 const Navbar = () => {
   const data = useCart();
   const totalItemCount = data.reduce((total, item) => total + item.qty, 0);
-
   const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
-  };
-
-  const buttonStyle = {
-    backgroundColor: "black",
-    color: "#ff7800",
-    borderRadius: "10px",
-    height: "2.5rem",
-    padding: "0.25rem 0.5rem",
-  };
-
-  const buttonStyles = {
-    backgroundColor: "#ff7800",
-    color: "black",
-    borderRadius: "10px",
-    height: "2.5rem",
-    padding: "0.25rem 0.5rem",
   };
 
   const scrollToTop = () => {
@@ -39,172 +27,72 @@ const Navbar = () => {
     });
   };
 
-  const [isHovered, setIsHovered] = useState(false);
-
-  const addUnderline = () => {
-    setIsHovered(true);
-  };
-
-  const removeUnderline = () => {
-    setIsHovered(false);
-  };
-
   return (
-    <nav
-      className="navbar navbar-expand-lg fixed-top"
-      style={{
-        backgroundColor: "#ff7800",
-        height: "3.8rem",
-        justifyContent: "space-between",
-      }}
-    >
-      <div className="container-fluid">
-        <Link
-          className="navbar-brand font-weight-bold"
-          style={{
-            fontSize: "3rem",
-            color: "white",
-            fontFamily: "Roboto, sans-serif",
-          }}
-          to="/"
-          onClick={scrollToTop}
-        >
-          <img
-            src={foodelogo}
-            alt="Logo"
-            style={{ height: "3rem", width: "auto" }}
-          />
-        </Link>
-        <div className="navbar-nav">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">
-                <button
-                  className="btn btn-home"
-                  style={{
-                    ...buttonStyles,
-                  }}
-                  onMouseEnter={addUnderline}
-                  onMouseLeave={removeUnderline}
-                >
-                  Home <BiHome/>
-                </button>
-              </Link>
-            </li>
+    <nav className="fixed top-0 left-0 right-0 h-[3.8rem] bg-[#8c0145] z-50">
+      <div className="container h-full">
+        <div className="flex justify-between items-center h-full">
+          <Link
+            to="/"
+            onClick={scrollToTop}
+            className="text-xl font-bold text-white font-roboto no-underline"
+          >
+            Jogan Meera
+          </Link>
+
+          <div className="flex items-center space-x-2">
+            <Link to="/" className="no-underline">
+              <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                <BiHome className="text-2xl text-white group-hover:scale-110 transition-transform duration-200" />
+              </button>
+            </Link>
+
             {localStorage.getItem("authToken") ? (
-              <li className="nav-item">
-                <Link className="nav-link" to="/myOrders">
-                  <button
-                    className="btn btn-home"
-                    style={{
-                      ...buttonStyles,
-                    }}
-                    onMouseEnter={addUnderline}
-                    onMouseLeave={removeUnderline}
-                  >
-                    My Orders <BiPackage />
+              <>
+                <Link to="/myOrders" className="no-underline">
+                  <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                    <BiPackage className="text-2xl group-hover:scale-110 transition-transform duration-200" />
                   </button>
                 </Link>
-              </li>
-            ) : (
-              ""
-            )}
 
-            {!localStorage.getItem("authToken") ? (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    <button
-                      className="btn btn-login"
-                      style={{
-                        ...buttonStyle,
-                      }}
-                      onMouseOver={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "white";
-                      }}
-                      onMouseOut={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "#ff7800";
-                      }}
-                    >
-                      Login
-                    </button>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    <button
-                      className="btn btn-signup"
-                      style={{
-                        ...buttonStyle,
-                      }}
-                      onMouseOver={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "white";
-                      }}
-                      onMouseOut={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "#ff7800";
-                      }}
-                    >
-                      SignUp
-                    </button>
-                  </Link>
-                </li>
-              </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/cart">
-                    <button
-                      className="btn btn-home"
-                      style={{
-                        ...buttonStyles,
-                      }}
-                      onMouseEnter={addUnderline}
-                      onMouseLeave={removeUnderline}
-                    >
-                      Cart <BiCartAlt />
-                      {totalItemCount > 0 && (
-                        <span
-                          class="position-absolute top-50 start-100 translate-middle badge rounded-pill"
-                          style={{ color: "black" }}
-                        >
-                          {totalItemCount}
-                          <span className="visually-hidden">
-                            items in the cart
-                          </span>
-                        </span>
-                      )}
-                    </button>
-                  </Link>
-                </li>
+                <Link to="/cart" className="relative no-underline">
+                  <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                    <BiCartAlt className="text-2xl group-hover:scale-110 transition-transform duration-200" />
+                    {totalItemCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {totalItemCount}
+                      </span>
+                    )}
+                  </button>
+                </Link>
 
-                <li className="nav-item">
-                  <Link className="nav-link">
-                    <button
-                      className="btn btn-signup"
-                      style={{
-                        ...buttonStyle,
-                      }}
-                      onMouseOver={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "white";
-                      }}
-                      onMouseOut={(e) => {
-                        e.target.style.backgroundColor = "black";
-                        e.target.style.color = "#ff7800";
-                      }}
-                      onClick={handleLogout}
-                    >
-                      Logout <BiLogOut/>
-                    </button>
-                  </Link>
-                </li>
+                <Link to="/profile" className="no-underline">
+                  <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                    <BiUser className="text-2xl group-hover:scale-110 transition-transform duration-200" />
+                  </button>
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group"
+                >
+                  <BiLogOut className="text-2xl group-hover:scale-110 transition-transform duration-200" />
+                </button>
+              </>
+            ) : (
+              <div className="flex space-x-2">
+                <Link to="/login" className="no-underline">
+                  <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                    <BiLogIn className="text-2xl group-hover:scale-110 transition-transform duration-200" />
+                  </button>
+                </Link>
+                <Link to="/register" className="no-underline">
+                  <button className="flex items-center px-2 h-10 text-white rounded-lg cursor-pointer group">
+                    <BiUserPlus className="text-2xl group-hover:scale-110 transition-transform duration-200" />
+                  </button>
+                </Link>
               </div>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>

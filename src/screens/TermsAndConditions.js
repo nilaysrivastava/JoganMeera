@@ -1,7 +1,7 @@
 import React from "react";
 import { BiFileBlank } from "react-icons/bi";
 import Navbar from "../components/Navbar";
-import tncnpbg from "./tncnp.jpeg";
+import tncnpbg from "../images/tncnp.jpeg";
 
 const TermsAndConditions = () => {
   return (

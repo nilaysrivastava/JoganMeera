@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
-import {Row, Col, Card } from "react-bootstrap";
-import {BiPackage } from "react-icons/bi";
+import { Row, Col, Card } from "react-bootstrap";
+import { BiError, BiPackage } from "react-icons/bi";
 import Navbar from "../components/Navbar";
-import cartbg from "./cartbg.jpeg";
+import cartbg from "../images/cartbg.jpeg";
 
 const MyOrders = () => {
   const [orderData, setOrderData] = useState([]);
 
   const fetchMyOrder = async () => {
-    console.log(localStorage.getItem('userEmail'));
-    await fetch("http://localhost:4000/api/myorderData",{
-        method:'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: localStorage.getItem('userEmail')
-        })
-    }).then(async(res)=>{
-        let response=await res.json();
-        await setOrderData(response)
-    })
+    console.log(localStorage.getItem("userEmail"));
+    await fetch("http://localhost:4000/api/myorderData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem("userEmail"),
+      }),
+    }).then(async (res) => {
+      let response = await res.json();
+      await setOrderData(response);
+    });
   };
 
   useEffect(() => {
@@ -28,18 +28,22 @@ const MyOrders = () => {
   }, []);
 
   return (
-    <div style={{
+    <div
+      style={{
         backgroundImage: `url(${cartbg})`,
-//   backgroundSize: "cover",
-  backgroundPosition: "center",
-  minHeight: "100vh",
-  minWidth: "100vw",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundRepeat: "repeat-y"
-      }}>
-      <div><Navbar /></div>
+        //   backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh",
+        minWidth: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundRepeat: "repeat-y",
+      }}
+    >
+      <div>
+        <Navbar />
+      </div>
       <div
         style={{
           backgroundColor: "white",
@@ -51,9 +55,9 @@ const MyOrders = () => {
         }}
       >
         <h1 style={{ marginBottom: "1rem" }}>
-                  My Orders <BiPackage />
-                </h1>
-        <div style={{}}>
+          My Orders <BiPackage />
+        </h1>
+        {/* <div style={{}}>
         {orderData!=={} ? Array(orderData).map(data=>{
         return (
             data.orderData ?
@@ -108,11 +112,29 @@ const MyOrders = () => {
                             )
                         })
                     )
-                }):""
+                }): <div className="alert"
+                role="alert"
+                style={{
+                  backgroundColor: "#ff7800",
+                  color: "black",
+                  marginTop: "1rem",
+                  marginLeft: "1.4rem",
+                  marginRight: "1.4rem",
+                  textAlign: "center",
+                  padding: "1rem",
+                  paddingBottom: "10px",
+                  paddingTop:"8px",
+                  fontSize:"2rem"
+                }}>
+                  <span style={{ color: "black" }}>
+            <BiError />
+          </span>
+           &nbsp;No orders
+                </div>
         )
     }): ""}
 
-        </div>
+        </div> */}
       </div>
     </div>
   );

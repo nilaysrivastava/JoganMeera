@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { BiShield } from "react-icons/bi";
-import tncnpbg from "./tncnp.jpeg";
+import tncnpbg from "../images/tncnp.jpeg";
 
 const PrivacyPolicy = () => {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { BiError, BiCartAlt, BiTrashAlt, BiCheckCircle} from "react-icons/bi";
-import cartbg from "./cartbg.jpeg";
+import { BiError, BiCartAlt, BiTrashAlt, BiCheckCircle } from "react-icons/bi";
+import cartbg from "../images/cartbg.jpeg";
 import { useCart, useDispatchCart } from "../components/ContextReducer";
 import Navbar from "../components/Navbar";
 
@@ -12,60 +12,59 @@ const Cart = () => {
 
   if (data.length === 0 && !successMessage) {
     return (
+      <div
+        style={{
+          backgroundImage: `url(${cartbg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <Navbar />
+        </div>
         <div
           style={{
-            backgroundImage: `url(${cartbg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            height: "100vh",
-            width: "100vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: "white",
+            color: "black",
+            padding: "1rem",
+            marginTop: "7rem",
+            margin: "5rem",
+            borderRadius: "10px",
           }}
         >
-          <div>
-            <Navbar />
-          </div>
+          <h1 style={{ marginBottom: "1rem" }}>
+            My Cart <BiCartAlt />
+          </h1>
           <div
+            className="alert"
+            role="alert"
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#ff7800",
               color: "black",
+              marginTop: "1rem",
+              marginLeft: "1.4rem",
+              marginRight: "1.4rem",
+              textAlign: "center",
               padding: "1rem",
-              marginTop: "7rem",
-              margin: "5rem",
-              borderRadius: "10px",
+              paddingBottom: "10px",
+              paddingTop: "8px",
+              fontSize: "2rem",
             }}
           >
-            <h1 style={{ marginBottom: "1rem" }}>
-                  My Cart <BiCartAlt />
-                </h1>
-            <div
-              className="alert"
-              role="alert"
-              style={{
-                backgroundColor: "#ff7800",
-                color: "black",
-                marginTop: "1rem",
-                marginLeft: "1.4rem",
-                marginRight: "1.4rem",
-                textAlign: "center",
-                padding: "1rem",
-                paddingBottom: "10px",
-                paddingTop:"8px",
-                fontSize:"2rem"
-              }}
-            >
-{" "}
-          <span style={{ color: "black" }}>
-            <BiError />
-          </span>
-           Your Food-E Cart is empty
-              
-            </div>
+            {" "}
+            <span style={{ color: "black" }}>
+              <BiError />
+            </span>
+            Your Cart is empty
           </div>
         </div>
-      );
+      </div>
+    );
   }
 
   const handleCheckout = async () => {
@@ -149,152 +148,152 @@ const Cart = () => {
     await dispatch({ type: "REMOVE", id: itemId });
   };
 
-  if (!successMessage) {
-    return (
-      <div
-        style={{
-          backgroundImage: `url(${cartbg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          minWidth: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <Navbar />
-        </div>
-        <div
-          style={{
-            backgroundColor: "white",
-            color: "black",
-            padding: "1rem",
-            marginTop: "7rem",
-            margin: "5rem",
-            borderRadius: "10px",
-          }}
-        >
-          <Container>
-            <Row>
-              <Col>
-                <h1 style={{ marginBottom: "1rem" }}>
-                  My Cart <BiCartAlt />
-                </h1>
-                {renderCartItems()}
-                <hr />
-                <Row>
-                  <Col sm={6}>
-                    <h4>
-                      <span style={{ fontWeight: "bold" }}>Total: &nbsp;</span>
+  // if (!successMessage) {
+  //   return (
+  //     <div
+  //       style={{
+  //         backgroundImage: `url(${cartbg})`,
+  //         backgroundSize: "cover",
+  //         backgroundPosition: "center",
+  //         minHeight: "100vh",
+  //         minWidth: "100vw",
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <div>
+  //         <Navbar />
+  //       </div>
+  //       <div
+  //         style={{
+  //           backgroundColor: "white",
+  //           color: "black",
+  //           padding: "1rem",
+  //           marginTop: "7rem",
+  //           margin: "5rem",
+  //           borderRadius: "10px",
+  //         }}
+  //       >
+  //         <Container>
+  //           <Row>
+  //             <Col>
+  //               <h1 style={{ marginBottom: "1rem" }}>
+  //                 My Cart <BiCartAlt />
+  //               </h1>
+  //               {renderCartItems()}
+  //               <hr />
+  //               <Row>
+  //                 <Col sm={6}>
+  //                   <h4>
+  //                     <span style={{ fontWeight: "bold" }}>Total: &nbsp;</span>
 
-                      <span
-                        style={{
-                          fontSize: "2rem",
-                          color: "#ff7800",
-                        }}
-                      >
-                        ₹{data.reduce((acc, item) => acc + item.totalPrice, 0)}
-                        /-
-                      </span>
-                    </h4>
-                  </Col>
-                  <Col sm={6} className="d-flex justify-content-end">
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      style={{
-                        backgroundColor: "#ff7800",
-                        color: "black",
-                        borderColor: "#ff7800",
-                      }}
-                      onClick={handleCheckout}
-                    >
-                      Checkout
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Container>
-          {successMessage && (
-            <div
-              className="alert"
-              role="alert"
-              style={{
-                backgroundColor: "#ff7800",
-                color: "black",
-                marginTop: "1rem",
-                marginLeft: "1.4rem",
-                marginRight: "1.4rem",
-                textAlign: "center",
-                padding: "2px",
-                paddingBottom: "10px",
-              }}
-            >
-              <span style={{ fontSize: "2rem", color: "green" }}>
-                <BiCheckCircle />
-              </span>{" "}
-              {successMessage}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div
-        style={{
-          backgroundImage: `url(${cartbg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <Navbar />
-        </div>
-        <div
-          style={{
-            backgroundColor: "white",
-            color: "black",
-            padding: "1rem",
-            marginTop: "7rem",
-            margin: "5rem",
-            borderRadius: "10px",
-          }}
-        >
-            <h1 style={{ marginBottom: "1rem" }}>
-                  My Cart <BiCartAlt />
-                </h1>
-          <div
-            className="alert"
-            role="alert"
-            style={{
-              backgroundColor: "#ff7800",
-              color: "black",
-              marginTop: "1rem",
-              marginLeft: "1.4rem",
-              marginRight: "1.4rem",
-              textAlign: "center",
-              padding: "2px",
-              paddingBottom: "10px",
-            }}
-          >
-            <span style={{ fontSize: "2rem", color: "green" }}>
-              <BiCheckCircle />
-            </span>{" "}
-            {successMessage}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  //                     <span
+  //                       style={{
+  //                         fontSize: "2rem",
+  //                         color: "#ff7800",
+  //                       }}
+  //                     >
+  //                       ₹{data.reduce((acc, item) => acc + item.totalPrice, 0)}
+  //                       /-
+  //                     </span>
+  //                   </h4>
+  //                 </Col>
+  //                 <Col sm={6} className="d-flex justify-content-end">
+  //                   <Button
+  //                     variant="primary"
+  //                     size="lg"
+  //                     style={{
+  //                       backgroundColor: "#ff7800",
+  //                       color: "black",
+  //                       borderColor: "#ff7800",
+  //                     }}
+  //                     onClick={handleCheckout}
+  //                   >
+  //                     Checkout
+  //                   </Button>
+  //                 </Col>
+  //               </Row>
+  //             </Col>
+  //           </Row>
+  //         </Container>
+  //         {successMessage && (
+  //           <div
+  //             className="alert"
+  //             role="alert"
+  //             style={{
+  //               backgroundColor: "#ff7800",
+  //               color: "black",
+  //               marginTop: "1rem",
+  //               marginLeft: "1.4rem",
+  //               marginRight: "1.4rem",
+  //               textAlign: "center",
+  //               padding: "2px",
+  //               paddingBottom: "10px",
+  //             }}
+  //           >
+  //             <span style={{ fontSize: "2rem", color: "green" }}>
+  //               <BiCheckCircle />
+  //             </span>{" "}
+  //             {successMessage}
+  //           </div>
+  //         )}
+  //       </div>
+  //     </div>
+  //   );
+  // } else {
+  //   return (
+  //     <div
+  //       style={{
+  //         backgroundImage: `url(${cartbg})`,
+  //         backgroundSize: "cover",
+  //         backgroundPosition: "center",
+  //         height: "100vh",
+  //         width: "100vw",
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <div>
+  //         <Navbar />
+  //       </div>
+  //       <div
+  //         style={{
+  //           backgroundColor: "white",
+  //           color: "black",
+  //           padding: "1rem",
+  //           marginTop: "7rem",
+  //           margin: "5rem",
+  //           borderRadius: "10px",
+  //         }}
+  //       >
+  //         <h1 style={{ marginBottom: "1rem" }}>
+  //           My Cart <BiCartAlt />
+  //         </h1>
+  //         <div
+  //           className="alert"
+  //           role="alert"
+  //           style={{
+  //             backgroundColor: "#ff7800",
+  //             color: "black",
+  //             marginTop: "1rem",
+  //             marginLeft: "1.4rem",
+  //             marginRight: "1.4rem",
+  //             textAlign: "center",
+  //             padding: "2px",
+  //             paddingBottom: "10px",
+  //           }}
+  //         >
+  //           <span style={{ fontSize: "2rem", color: "green" }}>
+  //             <BiCheckCircle />
+  //           </span>{" "}
+  //           {successMessage}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 };
 
 export default Cart;
