@@ -11,6 +11,7 @@ import mw from "../images/m-w.jpg";
 import xy from "../images/3-y.jpg";
 import xr from "../images/3-r.jpg";
 import xw from "../images/3-w.jpg";
+import { placeOrder } from "../services/api"; // Import the API service
 
 const godsOptions = ["Krishna", "Mata", "X"];
 const colors = ["Yellow", "Red", "White"];
@@ -49,10 +50,30 @@ const Poshaak = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleAddToCart = () => {
-    alert(
-      `Added to cart: ${selectedGod} idol in ${selectedColor} color, size ${selectedSize}`
-    );
+  // Updated handleAddToCart function to integrate with the backend
+  const handleAddToCart = async () => {
+    const orderData = {
+      customerName: "John Doe", // Replace with actual user input
+      items: [
+        {
+          name: selectedGod,
+          category: "Poshaak",
+          color: selectedColor,
+          size: selectedSize,
+          price: 999, // Set actual price
+          quantity: 1,
+        },
+      ],
+      totalPrice: 999, // Set actual total price
+    };
+
+    try {
+      // Call the API to place the order
+      const response = await placeOrder(orderData);
+      alert(response.message || "Order placed successfully!");
+    } catch (error) {
+      alert("Error placing order. Please try again.");
+    }
   };
 
   return (
