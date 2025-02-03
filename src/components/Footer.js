@@ -95,7 +95,7 @@ const Footer = () => {
 
         <hr className="mt-6 border-white/60" />
 
-        <div className="text-center text-sm mt-8">© 2024, Jogan Meera</div>
+        <div className="text-center text-sm mt-8">© 2025, Jogan Meera</div>
       </div>
     </footer>
   );

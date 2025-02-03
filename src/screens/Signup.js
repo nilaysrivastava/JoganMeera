@@ -13,7 +13,6 @@ import {
   BiUserCheck,
 } from "react-icons/bi";
 import Navbar from "../components/Navbar";
-import signupbg from "../images/signupbg.jpeg";
 import Footer from "../components/Footer";
 
 const Signup = () => {
@@ -79,7 +78,7 @@ const Signup = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url(${signupbg})`,
+          backgroundColor: "#ffce50",
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh",
@@ -196,10 +195,10 @@ const Signup = () => {
               id="signup"
               onClick={PostData}
               style={{
-                backgroundColor: "#ff7800",
+                backgroundColor: "#8c0145",
                 width: "100%",
-                color: "#000000",
-                borderColor: "#ff7800",
+                color: "white",
+                borderColor: "#8c0145",
               }}
             >
               <BiUserPlus /> Signup
@@ -208,14 +207,14 @@ const Signup = () => {
               By creating an account, I accept the{" "}
               <Link
                 to="/terms"
-                style={{ textDecoration: "none", color: "#ff7800" }}
+                style={{ textDecoration: "none", color: "#8c0145" }}
               >
                 Terms & Conditions
               </Link>
               &nbsp; &amp; &nbsp;
               <Link
                 to="/privacy"
-                style={{ textDecoration: "none", color: "#ff7800" }}
+                style={{ textDecoration: "none", color: "#8c0145" }}
               >
                 Privacy Policy.
               </Link>
@@ -227,15 +226,15 @@ const Signup = () => {
                 variant="primary"
                 type="submit"
                 style={{
-                  backgroundColor: "#ff7800",
+                  backgroundColor: "#8c0145",
                   width: "100%",
-                  color: "#000000",
-                  borderColor: "#ff7800",
+                  color: "white",
+                  borderColor: "#8c0145",
                 }}
               >
                 <Link
                   to="/login"
-                  style={{ textDecoration: "none", color: "black" }}
+                  style={{ textDecoration: "none", color: "white" }}
                 >
                   <BiLogIn /> Login
                 </Link>
