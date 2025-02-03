@@ -45,7 +45,7 @@ const Categories = () => {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="w-[300px] rounded-lg overflow-hidden shadow-md cursor-pointer text-center hover:shadow-lg transition-shadow"
+            className="w-[300px] rounded-lg overflow-hidden shadow-md cursor-pointer text-center hover:shadow-lg transition-shadow bg-white"
             onClick={() => handleCardClick(category.id)}
           >
             <img

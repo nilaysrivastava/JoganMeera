@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaEnvelope,
   FaFacebook,
@@ -16,12 +18,31 @@ const Footer = () => {
           <div className="md:flex-1">
             <h5 className="font-bold mb-2">Direct Links</h5>
             <ul className="list-none p-0">
-              <li className="cursor-pointer hover:text-gray-200">Home</li>
               <li className="cursor-pointer hover:text-gray-200">
-                Our Products
+                <Link to="/" className="text-white no-underline">
+                  Home
+                </Link>
               </li>
-              <li className="cursor-pointer hover:text-gray-200">About Us</li>
-              <li className="cursor-pointer hover:text-gray-200">Contact Us</li>
+              <li className="cursor-pointer hover:text-gray-200">
+                <a href="#products" className="text-white no-underline">
+                  Our Products
+                </a>
+              </li>
+              <li className="cursor-pointer hover:text-gray-200">
+                <a href="#about" className="text-white no-underline">
+                  About Us
+                </a>
+              </li>
+              <li className="cursor-pointer hover:text-gray-200">
+                <a href="#reviews" className="text-white no-underline">
+                  Customer Reviews
+                </a>
+              </li>
+              <li className="cursor-pointer hover:text-gray-200">
+                <a href="#faq" className="text-white no-underline">
+                  FAQs
+                </a>
+              </li>
             </ul>
           </div>
 
